@@ -42,13 +42,18 @@ aws lambda create-function --function-name lambdatest  \
     --runtime java8 --handler com.rubenlaguna.MyLambdaHandler::handleRequest \
     --role arn:aws:iam::<account>:role/LambdaTestRole \
     --zip-file fileb://build/distributions/MyLambdaHandler-1.0-SNAPSHOT.zip \
-    --timeout 60 --memory-size 512
+    --timeout 60 --memory-size 512 --environment '{"Variables":{"SECRET_ID":"production/MyAwesomeAppSecret"}}'
     
 aws lambda update-function-code --function-name lambdatest \
     --zip-file fileb://build/distributions/MyLambdaHandler-1.0-SNAPSHOT.zip
  
 aws lambda update-function-configuration --function-name lambdatest --timeout 120  --memory-size 512
 ```
+
+# Test the function 
+
+Use the AWS Lambda console to Test with an S3 event
+
 
 # References
 
