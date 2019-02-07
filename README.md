@@ -3,7 +3,8 @@ Create a secret in the [AWS Secrets Manager console](https://console.aws.amazon.
  or using the [CLI](https://docs.aws.amazon.com/cli/latest/reference/secretsmanager/index.html)
  
 ```
- aws secretsmanager create-secret --name production/MyAwesomeAppSecret --secret-string file://mycreds.json      
+ aws secretsmanager create-secret --name production/MyAwesomeAppSecret --secret-string file://mycreds.json     
+ aws secretsmanager update-secret --secret-id "production/MyAwesomeAppSecret" --secret-string file://mycreds.json
 ```
 
 The secret is now created and the lambda function will be able to retrieve the secret to create JWT tokens.
