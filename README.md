@@ -1,6 +1,6 @@
 # Create a secret
 Create a secret in the [AWS Secrets Manager console](https://console.aws.amazon.com/secretsmanager/home?region=us-east-1#/home)
- or using the CLI
+ or using the [CLI](https://docs.aws.amazon.com/cli/latest/reference/secretsmanager/index.html)
  
 ```
  aws secretsmanager create-secret --name production/MyAwesomeAppSecret --secret-string file://mycreds.json      
@@ -63,4 +63,5 @@ Use the AWS Lambda console to Test with an S3 event
 * [aws lambda CLI reference](https://docs.aws.amazon.com/cli/latest/reference/lambda/index.html)
 * [Creating a ZIP Deployment Package for a Java Function](https://docs.aws.amazon.com/lambda/latest/dg/create-deployment-pkg-zip-java.html)
 * [AWS Lambda Function Handler in Java](https://docs.aws.amazon.com/lambda/latest/dg/java-programming-model-handler-types.html)
+* [AWS secretsmanager CLI](https://docs.aws.amazon.com/cli/latest/reference/secretsmanager/index.html)
 
