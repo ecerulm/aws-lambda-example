@@ -2,12 +2,12 @@ buildscript {
     repositories {
         jcenter()
     }
-    dependencies {
+    dependencies { // not really used now we use buildZip instead of shadowJar
         classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
     }
 }
 
-apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'com.github.johnrengelman.shadow' // TODO: remove
 apply plugin: 'java'
 
 group 'com.rubenlaguna'
@@ -24,8 +24,12 @@ dependencies {
     // https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk
     //compileOnly group: 'com.amazonaws', name: 'aws-java-sdk', version: '1.11.491'
 
+    // If we depend on aws-java-sdk the distribution package becomes huge
+    // better to depend only on s3 and secrets manager so the size is manageable
     compile group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.11.491'
     compile group: 'com.amazonaws', name: 'aws-java-sdk-secretsmanager', version: '1.11.491'
+    
+    // We need aws-lambda-java-core (Context) and aws-lambda-java-events (S3Event)
     // https://mvnrepository.com/artifact/com.amazonaws/aws-lambda-java-core
     compile group: 'com.amazonaws', name: 'aws-lambda-java-core', version: '1.2.0'
     // https://mvnrepository.com/artifact/com.amazonaws/aws-lambda-java-events
@@ -46,6 +50,9 @@ shadowJar {
 }
 
 task buildZip(type: Zip) { // https://docs.aws.amazon.com/lambda/latest/dg/create-deployment-pkg-zip-java.html
+    // the format of the aws lambda java distribution package is not a FatJar/UberJAR
+    // All compiled class files and resource files at the root level.
+    // All required jars to run the code in the /lib directory.
     from compileJava
     from processResources
     into('lib') {
