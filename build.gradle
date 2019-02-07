@@ -1,0 +1,56 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
+    }
+}
+
+apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'java'
+
+group 'com.rubenlaguna'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    // https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk
+    //compileOnly group: 'com.amazonaws', name: 'aws-java-sdk', version: '1.11.491'
+
+    compile group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.11.491'
+    compile group: 'com.amazonaws', name: 'aws-java-sdk-secretsmanager', version: '1.11.491'
+    // https://mvnrepository.com/artifact/com.amazonaws/aws-lambda-java-core
+    compile group: 'com.amazonaws', name: 'aws-lambda-java-core', version: '1.2.0'
+    // https://mvnrepository.com/artifact/com.amazonaws/aws-lambda-java-events
+    compile group: 'com.amazonaws', name: 'aws-lambda-java-events', version: '2.2.5'
+
+
+    compile 'io.jsonwebtoken:jjwt-api:0.10.5'
+    runtime 'io.jsonwebtoken:jjwt-impl:0.10.5',
+            // Uncomment the next line if you want to use RSASSA-PSS (PS256, PS384, PS512) algorithms:
+            //'org.bouncycastle:bcprov-jdk15on:1.60',
+            'io.jsonwebtoken:jjwt-jackson:0.10.5'
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+shadowJar {
+    classifier = 'all'
+}
+
+task buildZip(type: Zip) { // https://docs.aws.amazon.com/lambda/latest/dg/create-deployment-pkg-zip-java.html
+    from compileJava
+    from processResources
+    into('lib') {
+        from configurations.runtimeClasspath
+    }
+}
+
+build.dependsOn buildZip
